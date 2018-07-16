@@ -35,9 +35,9 @@ int main()
 // I will welcome you to the game.
 void PrintIntro()
 {
-	constexpr int32 WORD_LENGTH = 9;
+	
 	std::cout << "Welcome to Bulls and Cows, a fun word game.\n";
-	std::cout << "Can you guess the " << WORD_LENGTH;
+	std::cout << "Can you guess the " << BCGame.GetHiddenWordLength();
 	std::cout << " letter isogram I'm thinking of?\n";
 	std::cout << std::endl;
 	return;
@@ -80,6 +80,7 @@ FText GetGuess()
 	std::getline(std::cin, Guess);
 	return Guess;
 }
+
         // I will ask if you want to play again, if Y/y is entered
         //I will return a true.
 bool AskToPlayAgain()

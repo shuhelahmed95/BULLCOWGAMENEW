@@ -1,5 +1,5 @@
 
- #pragma oncen
+ #pragma once
 #include <string>
 
 using FString = std::string;
@@ -20,9 +20,10 @@ public:
 	int32 GetMaxTries() const;
 	int32 GetCurrentTry() const;
 	bool IsGameWon() const;
+	int32 GetHiddenWordLength() const;
+	bool CheckGuessValidity(FString) const ; // TODO make a more rich return value.
 
 	void Reset(); // TODO make a more rich return value.
-	bool CheckGuessValidity(FString); // TODO make a more rich return value.
 	FBullCowCount SubmitGuess(FString Guess);
 
 

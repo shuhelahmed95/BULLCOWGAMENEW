@@ -1,58 +1,75 @@
-#include "FbullCowGame.h"
+#include "FBullCowGame.h"
+
 using int32 = int;
 
-FbullCowGame::FbullCowGame()
+FBullCowGame::FBullCowGame() { Reset(); } //Constructor runs reset method.
+
+int32 FBullCowGame::GetMaxTries() const { return MyMaxTries;}
+int32 FBullCowGame::GetCurrentTry() const { return MyCurrentTry; }
+
+
+// I reset the game by setting the Max tries 8(default) and the current try 1.
+void FBullCowGame::Reset()
 {
-	Reset();
-}
+	constexpr int32 MAX_TRIES = 8;
+	MyMaxTries = MAX_TRIES;
 
-int32 FbullCowGame::GetMaxTries() const 
-{
-	
-	
-	return MyMaxTries;
+	const FString HIDDEN_WORD = "ant";
+	MyHiddenWord = HIDDEN_WORD;
 
-
-}
-
-int32 FbullCowGame::GetCurrentTry() const {return MyCurrentTry;}
-
-void FbullCowGame::Reset()
-{
-	
-
-	constexpr int32 MAXTRIES = 8;
-	MyMaxTries = MAXTRIES;
-
-	const FString Hidden_Word = "plant";
-	MyHiddenWord = Hidden_Word;
 	MyCurrentTry = 1;
-
-	
 	return;
 }
 
-//recieves a VALID guess and increments turn and return count
-BullCowCount FbullCowGame::SubmitGuess(FString)
-		{
-	//increment the turn number 
-	MyCurrentTry++;
-	//setup a return variable
-	BullCowCount BullCowCount;
-	//loop through all letters in guess.
-		// compare letters against hidden word
-
-	return BullCowCount;
-		}
-
-
-
-bool FbullCowGame::IsGameWon() const
+bool FBullCowGame::IsGameWon() const
 {
 	return false;
 }
 
-bool FbullCowGame::CheckGuessValidity(std::string)
+bool FBullCowGame::CheckGuessValidity(FString)
 {
 	return false;
+}
+
+// receives a VALID guess, incriments turn, and returns count
+FBullCowCount FBullCowGame::SubmitGuess(FString Guess)
+{
+	// incriment the turn number
+	MyCurrentTry++;
+
+    // loop through all letters in the guess
+    int32 HiddenWordLength = MyHiddenWord.length();
+	// setup a return variable
+	FBullCowCount BullCowCount;
+    for (int32 i = 0; i < HiddenWordLength; i++ )
+            {
+            // compare letters against the hidden word
+            for (int32 j=0; j < HiddenWordLength; j++){
+                if(Guess[i] == MyHiddenWord[j]){
+
+                    if(i == j){      //if letter matches
+                    BullCowCount.Bulls++;  // increment bulls
+
+                    }
+
+                    else {BullCowCount.Cows++; //if letter doesn't match and matches another letter increment cows.
+
+
+
+                        }
+
+
+
+                  }
+
+
+            }
+
+    }
+// should be: right letter right place  +1 bull
+// should be: right letter wrong place +1 cow
+// I think wrong letter not present in hidden word, will incriment the cows.
+
+
+	return BullCowCount;
 }

@@ -5,90 +5,89 @@ user interaction. For game logic see the FBullCowGame class.
 
 #include <iostream>
 #include <string>
-#include "FbullCowGame.h"
+#include "FBullCowGame.h"
 
 using FText = std::string;
 using int32 = int;
 
-void GameIntro();
-int main();
+void PrintIntro();
 void PlayGame();
-FText Getguess();
-bool AskToPlayAgn();
-FbullCowGame BCGame;
+FText GetGuess();
+bool AskToPlayAgain();
 
+FBullCowGame BCGame; // instantiate a new game
 
-     // MAIN METHOD
-	int main() 
-	{
-		do{
-			GameIntro();
-			PlayGame();
-			
-			
-		}while(AskToPlayAgn() );
-
-		return 0; //Exit the application
+// the entry point for our application
+int main()
+{
+	bool bPlayAgain = false;
+	do {
+		PrintIntro();
+		PlayGame();
+		bPlayAgain = AskToPlayAgain();
 	}
+	while (bPlayAgain);
 
-	void PlayGame()
-	{
-		BCGame.Reset();
-		int32 MaxTries = BCGame.GetMaxTries();
-		//std::cout << MaxTries << std::endl;
-	
-		//TODO change from for to while loop once we are validating tries 
-	for (int32 count = 0; count <= MaxTries; count++) 
-		{
-		
-		FText Guess = Getguess();   //TODO make loop to check for valid guess
-		//submit valid guess to the game 
-		//print32 number of bulls and cows 
-		std::cout << "Your guess was: " + Guess << std::endl;
-		std::cout << std::endl;
-
-		}
-	// TODO summarise game 
+	return 0; // exit the application
 }
 
 
-
-
- //METHOD is the game intro 
-	void GameIntro() 
-	{
-
-	constexpr int32  WORD_LENGTH = 5;
-	std::cout << "							Welcome to Bulls and Cows " << std::endl;
-	std::cout << "							  Made by Shuhel Ahmed      " << std::endl;
-	std::cout << "			                   Can you guess the " << WORD_LENGTH << " letter word I am thinking off ? \n";
+// I will welcome you to the game.
+void PrintIntro()
+{
+	constexpr int32 WORD_LENGTH = 9;
+	std::cout << "Welcome to Bulls and Cows, a fun word game.\n";
+	std::cout << "Can you guess the " << WORD_LENGTH;
+	std::cout << " letter isogram I'm thinking of?\n";
+	std::cout << std::endl;
 	return;
-	
+}
+
+// MY purpose is to reset the game, get guess & submit guess to the game for the MAX number of tries defined.
+// I also print the number of BUlls and Cows.
+void PlayGame()
+{
+	BCGame.Reset();
+	int32 MaxTries = BCGame.GetMaxTries();
+
+	// loop for the number of turns asking for guesses
+	// TODO change from FOR to WHILE loop once we are validating tries
+	for (int32 count = 1; count <= MaxTries; count++) {
+		FText Guess = GetGuess(); // TODO make loop checking valid
+
+		// submit valid guess to the game and recieve counts
+		FBullCowCount BullCowCount = BCGame.SubmitGuess(Guess);
+
+		// print number of bulls and cows
+		std::cout << "Bulls = " << BullCowCount.Bulls;
+		std::cout << ". Cows = " << BullCowCount.Cows << std::endl;
+
+
+		std::cout << std::endl;
 	}
 
+	// TODO summarise game
+}
 
+       // I will ask for a guess and return it.
+FText GetGuess()
+{
+	int32 CurrentTry = BCGame.GetCurrentTry();
 
-
-// METHOD asks for a guess and returns it.
-	FText Getguess()
-	{
-		int32 CurrentTry = BCGame.GetCurrentTry();
-		std::cout << "Try: " << CurrentTry << std::endl << "Enter your guess: ";
-
-
-		FText Guess = "";
-		std::getline(std::cin, Guess);
-		return Guess;
-		
-		
-	}
-
-	bool AskToPlayAgn()
-	{
-		std::cout << "Do you want to play again? " << std::endl;
-		FText Response = "";
-		std::getline(std::cin,Response);
- 		return (Response[0] == 'y' || Response[0] == 'Y');
-	}
+	// get a guess from the player
+	std::cout << "Try " << CurrentTry << ". Enter your guess: ";
+	FText Guess = "";
+	std::getline(std::cin, Guess);
+	return Guess;
+}
+        // I will ask if you want to play again, if Y/y is entered
+        //I will return a true.
+bool AskToPlayAgain()
+{
+	std::cout << "Do you want to play again (y/n)? ";
+	FText Response = "";
+	std::getline(std::cin, Response);
+	return (Response[0] == 'y') || (Response[0] == 'Y');
+}
 
 	

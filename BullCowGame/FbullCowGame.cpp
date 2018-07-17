@@ -6,6 +6,7 @@ FBullCowGame::FBullCowGame() { Reset(); } //Constructor runs reset method.
 
 int32 FBullCowGame::GetMaxTries() const { return MyMaxTries;}
 int32 FBullCowGame::GetCurrentTry() const { return MyCurrentTry; }
+int32 FBullCowGame::GetHiddenWordLength() const { return MyHiddenWord.length(); }
 
 
 // I reset the game by setting the Max tries 8(default) and the current try 1.
@@ -16,7 +17,6 @@ void FBullCowGame::Reset()
 
 	MyMaxTries = MAX_TRIES;
 	MyHiddenWord = HIDDEN_WORD;
-
 	MyCurrentTry = 1;
 	return;
 }
@@ -26,34 +26,46 @@ bool FBullCowGame::IsGameWon() const
 	return false;
 }
 
-int32 FBullCowGame::GetHiddenWordLength() const { return MyHiddenWord.length(); }
 
-EWordStatus FBullCowGame::CheckGuessValidity (FString) const
+
+EGuessStatus FBullCowGame::CheckGuessValidity (FString Guess ) const
 {
-	return EWordStatus::OK; //TODO make actual error 
+	if (false)    
+	{
+		return EGuessStatus::Not_Isogram;
+	}
+	else if(false)
+	{
+		return EGuessStatus::Not_Lowercase;
+	}
+	else if (Guess.length() != GetHiddenWordLength()) 
+	{
+		return EGuessStatus::Wrong_Length;
+	}
+	else 
+	{
+		return EGuessStatus::OK;
+	}
 }
 
 // receives a VALID guess, incriments turn, and returns count
-FBullCowCount FBullCowGame::SubmitGuess(FString Guess)
+FBullCowCount FBullCowGame::SubmitValidGuess(FString Guess)
 {
-	// incriment the turn number
 	MyCurrentTry++;
-
-    // loop through all letters in the guess
-    int32 HiddenWordLength = MyHiddenWord.length();
-	// setup a return variable
 	FBullCowCount BullCowCount;
-    for (int32 MHWChar = 0; MHWChar < HiddenWordLength; MHWChar++ )
-            {
-            // compare letters against the hidden word
-            for (int32 GChar=0; GChar < HiddenWordLength; GChar++){
-                if(Guess[GChar] == MyHiddenWord[MHWChar]){
+    int32 WordLength = MyHiddenWord.length(); //assuming same length as guess
 
-                    if(MHWChar == GChar){      //if letter matches
-                    BullCowCount.Bulls++;  // increment bulls
+    for (int32 MHWChar = 0; MHWChar < WordLength; MHWChar++ ) // 1.looping thorugh hiddenwordLength 
+            {
+            // compare letters against the guess
+            for (int32 GChar=0; GChar < WordLength; GChar++){  //2. looping thorugh guess ( with same iteration as hiddenword length) 
+                if(Guess[GChar] == MyHiddenWord[MHWChar]){        //3. if at any time the cycles match (of 1 and 2)
+
+                    if(MHWChar == GChar){      //4. if letters match       
+                    BullCowCount.Bulls++;  //  5. increment bulls
 
                     }
-                    else {
+                    else {                      //6.if they don't match, increment the cow's 
 						BullCowCount.Cows++; //if letter doesn't match and matches another letter increment cows.
 
 

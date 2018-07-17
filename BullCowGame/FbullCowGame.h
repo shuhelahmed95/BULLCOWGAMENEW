@@ -12,14 +12,14 @@ struct FBullCowCount
 	int32 Cows = 0;
 };
 
-enum class EWordStatus
+enum class EGuessStatus
 {
+	Invalid_Status,
 	OK,
 	Not_Isogram,
 	Wrong_Length,
 	Not_Lowercase
-
-
+	
 };
 
 
@@ -33,12 +33,13 @@ public:
 
 	int32 GetMaxTries() const;
 	int32 GetCurrentTry() const;
-	bool IsGameWon() const;
 	int32 GetHiddenWordLength() const;
-	EWordStatus  CheckGuessValidity(FString) const ;
+
+	bool IsGameWon() const;
+	EGuessStatus  CheckGuessValidity(FString) const ;
 
 	void Reset(); // TODO make a more rich return value.
-	FBullCowCount SubmitGuess(FString Guess);
+	FBullCowCount SubmitValidGuess(FString );
 
 
 // ^^ Please try and ignore this and focus on the interface above ^^

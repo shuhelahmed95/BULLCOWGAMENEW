@@ -7,6 +7,8 @@ FBullCowGame::FBullCowGame() { Reset(); } //Constructor runs reset method.
 int32 FBullCowGame::GetMaxTries() const { return MyMaxTries;}
 int32 FBullCowGame::GetCurrentTry() const { return MyCurrentTry; }
 int32 FBullCowGame::GetHiddenWordLength() const { return MyHiddenWord.length(); }
+bool FBullCowGame::IsGameWon() const { return bGameIsWon;}
+
 
 
 // I reset the game by setting the Max tries 8(default) and the current try 1.
@@ -18,13 +20,10 @@ void FBullCowGame::Reset()
 	MyMaxTries = MAX_TRIES;
 	MyHiddenWord = HIDDEN_WORD;
 	MyCurrentTry = 1;
+	bGameIsWon = false;
 	return;
 }
 
-bool FBullCowGame::IsGameWon() const
-{
-	return false;
-}
 
 
 
@@ -80,7 +79,12 @@ FBullCowCount FBullCowGame::SubmitValidGuess(FString Guess)
 // should be: right letter wrong place +1 cow
 // I think wrong letter not present in hidden word, will incriment the cows.
 
-
+	if (BullCowCount.Bulls == WordLength) {
+		bGameIsWon = true;
+	}
+	else {
+		bGameIsWon = false;
+	}
 	return BullCowCount;
 }
 
